@@ -12,7 +12,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: "https://ifrutico-main.netlify.app"
+    origin: "https://ifrutico-main.netlify.app",
     credentials: true,
   })
 );
@@ -44,6 +44,7 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
 
 
 
