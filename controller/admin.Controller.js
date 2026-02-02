@@ -25,20 +25,20 @@ admin.post("/login", async (req, res) => {
   );
 
   res
-    .cookie("token", token, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: true, // true in production
-      maxAge: 24 * 60 * 60 * 1000,
-    })
-    .json({
-      staff: {
-        id: staff._id,
-        email: staff.email,
-        role: staff.role,
-      },
-    });
-});
+  .cookie("token", token, {
+    httpOnly: true,
+    secure: true,        
+    sameSite: "none",   
+    maxAge: 24 * 60 * 60 * 1000,
+  })
+  .json({
+    staff: {
+      id: staff._id,
+      email: staff.email,
+      role: staff.role,
+    },
+  });
+
 
 /* LOGOUT */
 admin.post("/logout", (req, res) => {
@@ -126,4 +126,5 @@ admin.put("/tickets/redeem/:id", authMiddleware, async (req, res) => {
 });
 
 module.exports = admin;
+
 
