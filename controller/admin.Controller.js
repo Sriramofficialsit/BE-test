@@ -8,7 +8,7 @@ const Payment = require("../models/Payment");
 const authMiddleware = require("../middleware/authMiddleware");
 const requireAdmin = require("../middleware/requireAdmin");
 
-
+/* LOGIN */
 admin.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -24,21 +24,21 @@ admin.post("/login", async (req, res) => {
     { expiresIn: "1d" }
   );
 
-  res
-  .cookie("token", token, {
+  res.cookie("token", token, {
     httpOnly: true,
-    secure: true,        
-    sameSite: "none",   
+    secure: true,
+    sameSite: "lax",
     maxAge: 24 * 60 * 60 * 1000,
-  })
-  .json({
+  });
+
+  res.json({
     staff: {
       id: staff._id,
       email: staff.email,
       role: staff.role,
     },
   });
-
+});
 
 /* LOGOUT */
 admin.post("/logout", (req, res) => {
@@ -52,18 +52,17 @@ admin.get("/me", authMiddleware, (req, res) => {
 });
 
 /* STAFF LIST */
-admin.get("/staff",authMiddleware,requireAdmin, async (req, res) => {
+admin.get("/staff", authMiddleware, requireAdmin, async (req, res) => {
   try {
-  const staff = await Staff.find({ role: "staff" });
-  res.json({ staff });
-} catch (err) {
-  res.status(500).json({ message: "Server error" });
-}
-
+    const staff = await Staff.find({ role: "staff" });
+    res.json({ staff });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
 /* REGISTER STAFF */
-admin.post("/register", authMiddleware,requireAdmin, async (req, res) => {
+admin.post("/register", authMiddleware, requireAdmin, async (req, res) => {
   const { name, email, password } = req.body;
 
   const exists = await Staff.findOne({ email });
@@ -81,13 +80,13 @@ admin.post("/register", authMiddleware,requireAdmin, async (req, res) => {
 });
 
 /* DELETE STAFF */
-admin.delete("/delete/:id", authMiddleware, requireAdmin,async (req, res) => {
+admin.delete("/delete/:id", authMiddleware, requireAdmin, async (req, res) => {
   await Staff.findByIdAndDelete(req.params.id);
   res.json({ message: "Deleted" });
 });
 
 /* UPDATE STAFF */
-admin.put("/update/:id",authMiddleware, requireAdmin,async (req, res) => {
+admin.put("/update/:id", authMiddleware, requireAdmin, async (req, res) => {
   const update = { name: req.body.name, email: req.body.email };
 
   if (req.body.password) {
@@ -97,6 +96,7 @@ admin.put("/update/:id",authMiddleware, requireAdmin,async (req, res) => {
   const staff = await Staff.findByIdAndUpdate(req.params.id, update, {
     new: true,
   });
+
   res.json({ staff });
 });
 
@@ -126,5 +126,3 @@ admin.put("/tickets/redeem/:id", authMiddleware, async (req, res) => {
 });
 
 module.exports = admin;
-
-
