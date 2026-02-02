@@ -44,7 +44,7 @@ const PORT = process.env.PORT || 5000;
 
 
 app.listen(PORT, () => {
-  console.log("✅ MongoDB connected");
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
 
