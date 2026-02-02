@@ -28,7 +28,7 @@ admin.post("/login", async (req, res) => {
     .cookie("token", token, {
       httpOnly: true,
       sameSite: "lax",
-      secure: false, // true in production
+      secure: true, // true in production
       maxAge: 24 * 60 * 60 * 1000,
     })
     .json({
@@ -126,3 +126,4 @@ admin.put("/tickets/redeem/:id", authMiddleware, async (req, res) => {
 });
 
 module.exports = admin;
+
