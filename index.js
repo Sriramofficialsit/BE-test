@@ -41,19 +41,10 @@ app.get("/ping", (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.get("/", async(req, res) => {
-  return res.json({
 
-   
-
-
-    message: "Server Working",
-    success: true,
-    data:users
-  });
-});
 
 app.listen(PORT, () => {
   console.log("✅ MongoDB connected");
   console.log(`🚀 Server running on port ${PORT}`);
 });
+
